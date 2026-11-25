@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173d30"><title>去農場玩｜教室電視版</title>
+<style>
+:root{color-scheme:light;--forest:#173d30;--green:#24634b;--soft:#e8efe1;--cream:#fbf8ed;--ink:#203e32;--gold:#f3c85f}*{box-sizing:border-box}body{margin:0;background:var(--cream);font-family:system-ui,"Noto Sans TC",sans-serif;color:var(--ink)}header{background:var(--forest);color:white;padding:1rem max(1rem,calc((100% - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:1rem}header strong{font-size:1.2rem}main{max-width:1050px;margin:auto;padding:clamp(1rem,4vw,2.5rem)}h1{font-size:clamp(2rem,6vw,4rem);line-height:1.1;margin:.25em 0}h2{margin:0 0 .6em}p{line-height:1.5}a{color:inherit}button,input{font:inherit}button,.link{display:inline-block;border:1px solid #b6cdb7;padding:.7em 1em;border-radius:.8em;background:white;color:var(--ink);cursor:pointer;text-decoration:none;font-weight:700}button:hover,.link:hover{background:var(--soft)}button:disabled{opacity:.55;cursor:default}.primary{background:var(--green);color:white;border-color:var(--green)}.primary:hover{background:var(--forest)}.hero{background:#dbe8ce;border-radius:1.5rem;padding:clamp(1.2rem,4vw,3rem);margin-bottom:1.4rem}.hero p{margin:0}.hero .sheep{float:right;font-size:clamp(3rem,10vw,8rem);line-height:1}.panel{border:1px solid #d2dccb;border-radius:1.4rem;background:#fffdf7;padding:clamp(1rem,4vw,2rem)}form{max-width:480px}label{display:grid;gap:.5em;font-weight:700}input{padding:.8em;border:1px solid #a0b6a4;border-radius:.6em;width:100%;margin-bottom:.8em}.grid,.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%, 185px),1fr));gap:.75rem}.options{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{text-align:left;min-height:4rem}.tile span{display:inline-block;margin-right:.55em}.bar{display:flex;gap:.65em;align-items:center;flex-wrap:wrap;margin:0 0 1rem}.bar .spacer{flex:1}.option{padding:.65em .45em;background:#fff;border:2px solid #d3dfcc;border-radius:.65em;display:block;text-align:center;overflow-wrap:anywhere}.selected{background:#fff0b6;border-color:#c5901f}.correct{background:#daf1d6;border-color:#509452}.wrong{background:#fbe1db;border-color:#c06e60}.feedback{background:var(--soft);padding:.7em .85em;border-radius:.6em;margin:.8em 0}.status{min-height:1.5em}.picture{background:linear-gradient(#d8f1fd 60%,#dcefc8 60%);text-align:center;border-radius:1rem;font-size:clamp(1.5rem,5vw,3.4rem);line-height:1.1;padding:.25em;margin:.4em 0 .55em}.picture.night{background:linear-gradient(#354c7e 60%,#557746 60%)}.sequence{padding:.55em;background:var(--soft);border-radius:.6em;min-height:2.4em;margin:.5em 0}.pair{display:grid;gap:.5em}.tv main{max-width:1450px;padding:2.7vh 4vw}.tv .panel{font-size:clamp(1.2rem,3.1vw,3.15rem);padding:.65em .9em}.tv .bar{font-size:clamp(1rem,2vw,1.8rem);margin-bottom:.6em}.tv h2{font-size:1.18em}.tv .options{gap:.35em}.tv .picture{font-size:clamp(1.3rem,4.5vh,3.3rem)}.tv .feedback{margin:.45em 0 0;padding:.4em .65em}.tv .option{padding:.35em}.muted{color:#496557}.actions{display:flex;gap:.5em;flex-wrap:wrap;margin-top:1em}.small{font-size:.88rem}@media(max-width:450px){header{font-size:.8rem}header strong{font-size:1rem}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{padding:.55em}}
+
+.local-tv .grid { grid-template-columns: repeat(auto-fit,minmax(min(100%,220px),1fr)); }
+.local-tv .tile { font-size: clamp(1rem,2vw,1.65rem); }
+.local-tv .actions button,.local-tv .bar button { font-size: clamp(1rem,2vw,1.55rem); }
+.local-tv button:focus-visible { outline: 4px solid #ab6500; outline-offset: 3px; }
+</style></head>
+<body><header><strong id="brand">🐑 去農場玩</strong><span id="mode">國語二上 · 第十課</span></header>
+<main id="app"></main><script>
+const quiz = (prompt, correct, ...wrong) => ({ prompt, correct, options:[correct,...wrong] });
+const order = (...parts) => ({ prompt:'請把詞語排成一句話。', correct:parts.join(''), options:parts, kind:'order' });
+const see = (picture, correct, ...wrong) => ({ ...quiz('哪一句最符合圖意？',correct,...wrong), picture });
+const hear = (word,...wrong) => ({ ...quiz('聽一聽，選出你聽到的詞語。',word,...wrong), audio:word });
+const pair = (...pairs) => ({ prompt:'先選左邊一張字卡，再選右邊的相似字。', kind:'pair', pairs });
+const games = [
+ ['相似字配對','🧩',[
+  pair(['棉','綿'],['抬','台'],['近','斤']),
+  pair(['捨','舍'],['慢','漫'],['靜','清']),
+  pair(['揮','軍'],['聽','廳'],['放','方'])]],
+ ['相似字選字','🌾',[
+  quiz('小羊的毛看起來像（　）花。','棉','綿','帛'),
+  quiz('妹妹（　）起頭看天空。','抬','台','治'),
+  quiz('請安（　）地聽故事。','靜','清','青'),
+  quiz('小羊慢（　）地走過草地。','慢','漫','曼')]],
+ ['部首① 找部首','🔍',[
+  quiz('「群」的部首是什麼？','羊','口','尹'),
+  quiz('「靜」的部首是什麼？','青','爭','目'),
+  quiz('「趣」的部首是什麼？','走','耳','又'),
+  quiz('「聽」的部首是什麼？','耳','心','王')]],
+ ['部首② 找同伴','🐑',[
+  quiz('哪個字和「抬」一樣是手部？','揮','近','景'),
+  quiz('哪個字和「忽」一樣是心部？','慢','棉','依'),
+  quiz('哪個字和「遠」一樣是辵部？','近','群','捨'),
+  quiz('哪個字和「揮」一樣是手部？','捨','放','堆')]],
+ ['部首③ 部首有幾畫','🍀',[
+  quiz('「棉」的部首是木，木有幾畫？','四畫','三畫','五畫'),
+  quiz('「堆」的部首是土，土有幾畫？','三畫','四畫','五畫'),
+  quiz('「景」的部首是日，日有幾畫？','四畫','五畫','六畫'),
+  quiz('「群」的部首是羊，羊有幾畫？','六畫','五畫','七畫')]],
+ ['句子詞語排序','🧺',[
+  order('媽媽','帶我','去農場','玩。'),
+  order('我','向小羊','揮手','說再見。'),
+  order('成群的羊','在草原上','靜靜地','吃草。'),
+  order('天色','慢慢','暗了','下來。')]],
+ ['看圖作答','🖼️',[
+  see(['☀️','🐑🐑🐑','🌱🌿🌱'],'羊群在草地上。','小羊在游泳。','農場下雨了。'),
+  see(['☀️','🧒👋　🐑','🌱🌿🌱'],'小朋友向小羊揮手。','小朋友正在睡覺。','小朋友在吃飯。'),
+  see(['🌙','⭐　🏠　⭐','🌲🌿🌲'],'天色已經暗了。','太陽剛升起。','小羊正在喝水。'),
+  see(['☀️','🌳　⛰️　🌳','🌷🌿🌷'],'遠方有一座山。','天上正在下雪。','近處有三隻小羊。')]],
+ ['生字解釋','📖',[
+  quiz('「抬頭」的「抬」是什麼意思？','往上舉','往下放','往前跑'),
+  quiz('「揮手」的「揮」是什麼意思？','擺動','握住','用耳朵聽'),
+  quiz('「安靜」的「靜」是什麼意思？','沒有聲音','聲音很大','天氣晴朗'),
+  quiz('「依靠」的「依」是什麼意思？','倚靠','放開','跑走')]],
+ ['圈詞意義','🌼',[
+  quiz('「風和日麗」形容什麼？','天氣晴朗，有微風','下著大雨','天氣非常冷'),
+  quiz('「依依不捨」代表什麼心情？','捨不得離開','急著離開','害怕得想哭'),
+  quiz('「成群」是什麼意思？','許多個聚在一起','只剩一個','排成一直線'),
+  quiz('「忽然」最接近哪個詞？','突然','慢慢','常常')]],
+ ['圈詞應用','🚜',[
+  quiz('小狗（　）叫了一聲，嚇了我一跳。','忽然','近看','依依不捨'),
+  quiz('夕陽下的湖面像一幅漂亮的（　）。','風景畫','棉花','草原'),
+  quiz('要離開遊樂園了，妹妹（　）地回頭看。','依依不捨','風和日麗','成群'),
+  quiz('清晨，天空（　）亮了。','慢慢','揮手','非常')]],
+ ['聽音辨詞','🎧',[
+  hear('棉花','年華','蓮花'),
+  hear('揮手','舉手','黑手'),
+  hear('草原','草地','草葉'), 
+  hear('放假','放下','放學'),
+  hear('近看','細看','遠看')]],
+ ['造詞','✏️',[
+  quiz('用「趣」造詞，哪一個正確？','有趣','趣年','趣離'),
+  quiz('哪個詞可以填入「揮」？','（　）手','遠（　）','（　）花'),
+  quiz('用「堆」造詞，哪一個正確？','一堆土','堆耳朵','堆手'),
+  quiz('用「捨」造詞，哪一個正確？','捨不得','捨頭','捨色')]],
+ ['造詞放進句子','💬',[
+  quiz('生日派對快結束了，我很（　）離開。','捨不得','捨下','取捨'),
+  quiz('田野上有一（　）小羊。','群','揮','抬'),
+  quiz('請（　）走過教室，大家正在休息。','靜靜地','非常','放假'),
+  quiz('妹妹（　）看見樹上有一隻小鳥。','抬頭','抬手','低頭')]],
+ ['字音辨一辨','🔤',[
+  quiz('「趣」的注音是什麼？','ㄑㄩˋ','ㄑㄩ','ㄑㄩˇ'),
+  quiz('「揮」的注音是什麼？','ㄏㄨㄟ','ㄏㄨㄟˊ','ㄏㄨㄟˋ'),
+  quiz('「捨」在「依依不捨」裡怎麼念？','ㄕㄜˇ','ㄕㄜˋ','ㄙㄜˇ'),
+  quiz('「假」在「放假」裡怎麼念？','ㄐㄧㄚˋ','ㄐㄧㄚˇ','ㄐㄧㄚˊ')]]
+];
+
+const app=document.querySelector('#app');
+const mode=document.querySelector('#mode');
+const query=selector=>document.querySelector(selector);
+const html=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const button=(label,action,cls='',disabled=false)=>'<button type="button" data-action="'+action+'" class="'+cls+'"'+(disabled?' disabled':'')+'>'+html(label)+'</button>';
+let round;
+
+function shuffle(values) {
+  const picks=[...values];
+  for(let i=picks.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [picks[i],picks[j]]=[picks[j],picks[i]];
+  }
+  return picks;
+}
+
+function setMessage(value) {
+  const element=query('#audio-status');
+  if(element) element.textContent=value;
+}
+
+function newRound(gameId) {
+  const [title,icon,questions]=games[gameId];
+  round={gameId,title,icon,questions,index:0,score:0};
+  newQuestion();
+}
+
+function newQuestion() {
+  const q=round.questions[round.index];
+  round.board=q.kind==='pair'
+    ? {left:shuffle(q.pairs.map(([left])=>left)),right:shuffle(q.pairs.map(([,right])=>right)),chosen:null,matches:[],missed:false}
+    : {options:shuffle(q.options),picked:[],answer:null};
+  round.feedback=null;
+}
+
+function snapshot() {
+  if(!round) return {view:'waiting'};
+  const {title,icon,questions,index,score,board,feedback}=round;
+  if(index>=questions.length) return {view:'finished',title,icon,score,total:questions.length};
+  const q=questions[index];
+  return {
+    view:'question',title,icon,index:index+1,total:questions.length,score,prompt:q.prompt,kind:q.kind,
+    picture:q.picture,audio:Boolean(q.audio),board,feedback
+  };
+}
+
+function waiting() {
+  return '<section class="hero"><span class="sheep" aria-hidden="true">🐑</span><p>國語二上 · 第十課</p><h1>去農場玩</h1><p>等老師開始遊戲，一起來闖關！</p></section>';
+}
+
+function questionView(state,teacher) {
+  if(state.view==='waiting') return waiting();
+  if(state.view==='finished') {
+    return '<section class="hero"><span class="sheep" aria-hidden="true">🏅</span><p>'+html(state.title)+'</p><h1>闖關完成！</h1><p>答對 '+html(state.score)+' ／ '+html(state.total)+' 題</p></section>';
+  }
+  const {board,feedback}=state;
+  const option=(label,action,cls='',disabled=false)=>teacher
+    ? button(label,action,'option '+cls,disabled)
+    : '<div class="option '+cls+'">'+html(label)+'</div>';
+  let items='';
+  if(state.kind==='pair') {
+    const left=board.left.map((letter,index)=>option(letter,'left:'+index,board.matches.some(pair=>pair[0]===letter)?'correct':board.chosen===letter?'selected':'',board.matches.some(pair=>pair[0]===letter))).join('');
+    const right=board.right.map((letter,index)=>option(letter,'right:'+index,board.matches.some(pair=>pair[1]===letter)?'correct':'',!board.chosen||board.matches.some(pair=>pair[1]===letter))).join('');
+    items='<div class="options"><div class="pair">'+left+'</div><div class="pair">'+right+'</div></div>';
+  } else {
+    if(state.kind==='order') {
+      items='<div class="sequence">'+(board.picked.length?board.picked.map(i=>html(board.options[i])).join(' '):'在這裡排出句子')+'</div>';
+    }
+    items+='<div class="options">'+board.options.map((label,index)=>{
+      const cls=feedback && label===feedback.correct?'correct':feedback && board.answer===index?'wrong':board.picked.includes(index)?'selected':'';
+      return option(label,'option:'+index,cls,Boolean(feedback)||board.picked.includes(index));
+    }).join('')+'</div>';
+  }
+  const image=state.picture?'<div class="picture '+(state.picture[0]==='🌙'?'night':'')+'">'+state.picture.map(row=>'<div>'+html(row)+'</div>').join('')+'</div>':'';
+  const audio=state.audio && teacher?'<div class="bar">'+button('🔊 播放語詞','speak')+'</div>':'';
+  const result=feedback?'<div class="feedback" role="status">'+html(feedback.text)+(feedback.correct?'　正解：'+html(feedback.correct):'')+'</div>':'';
+  return '<div class="bar"><strong>'+html(state.icon)+' '+html(state.title)+'</strong><span class="spacer"></span><span>第 '+html(state.index)+' ／ '+html(state.total)+' 題　⭐ '+html(state.score)+'</span></div><section class="panel"><h2>'+html(state.prompt)+'</h2>'+image+audio+items+result+'</section>';
+}
+
+function classroomView() {
+  if(!round) {
+    app.innerHTML='<section class="hero"><span class="sheep" aria-hidden="true">🐑</span><p>國語二上 · 第十課</p><h1>去農場玩</h1><p>用遙控器方向鍵和確認鍵，或用滑鼠選擇遊戲。</p></section><section class="grid" aria-label="遊戲選單">'+games.map(([title,icon],i)=>button(icon+'　'+title,'start:'+i,'tile')).join('')+'</section>';
+    return;
+  }
+  const state=snapshot();
+  const done=state.view==='finished';
+  const sort=state.kind==='order'&&!state.feedback;
+  const controls=button('回遊戲清單','home')+
+    (done?button('再玩一次','start:'+round.gameId,'primary'):
+      sort?button('重排','clear','',!state.board.picked.length)+button('送出答案','submit','primary',state.board.picked.length!==state.board.options.length):
+      '');
+  const next=!done?button(state.index===state.total?'看本關結果':'下一題','next','primary',!state.feedback||!round.answered):'';
+  app.innerHTML=questionView(state,true)+'<div class="actions">'+controls+next+'</div><p id="audio-status" role="status"></p>';
+}
+
+function finish(correct,answer) {
+  round.answered=true;
+  if(correct) round.score++;
+  round.feedback={text:correct?'答對了！':'再複習一下！',correct:answer};
+}
+
+async function act(action) {
+  const [type,raw]=action.split(':');
+  const index=Number(raw);
+  if(type==='start') {
+    newRound(index);
+    round.answered=false;
+  } else if(type==='home') {
+    round=null;
+  } else {
+    const q=round.questions[round.index];
+    const board=round.board;
+    if(type==='speak') {
+      if(!('speechSynthesis' in window)) {
+        setMessage('此裝置無法朗讀。請老師讀出：'+q.audio);
+        return;
+      }
+      const speech=new SpeechSynthesisUtterance(q.audio);
+      speech.lang='zh-TW';
+      const voices=speechSynthesis.getVoices();
+      speech.voice=voices.find(voice=>/^zh[-_]TW$/i.test(voice.lang)) || voices.find(voice=>/^zh/i.test(voice.lang)) || null;
+      speech.rate=0.75;
+      speech.onerror=event=>{
+        if(!['interrupted','canceled'].includes(event.error)) setMessage('無法播放。請老師讀出：'+q.audio);
+      };
+      speechSynthesis.cancel();
+      speechSynthesis.speak(speech);
+      return;
+    }
+    if(type==='next') {
+      round.index++;
+      round.answered=false;
+      if(round.index<round.questions.length) newQuestion();
+    }
+    if(type==='clear') board.picked=[];
+    if(type==='option') {
+      if(q.kind==='order') board.picked.push(index);
+      else {
+        board.answer=index;
+        finish(board.options[index]===q.correct,q.correct);
+      }
+    }
+    if(type==='submit') {
+      finish(board.picked.map(i=>board.options[i]).join('')===q.correct,q.correct);
+    }
+    if(type==='left') {
+      board.chosen=board.left[index];
+      round.feedback=null;
+    }
+    if(type==='right') {
+      const right=board.right[index];
+      if(q.pairs.some(([left,match])=>left===board.chosen&&right===match)) {
+        board.matches.push([board.chosen,right]);
+        if(board.matches.length===q.pairs.length) {
+          finish(!board.missed);
+          round.feedback.text=board.missed?'三組都配好了！這題有重試。':'三組都配對成功！';
+        }
+      } else {
+        board.missed=true;
+        round.feedback={text:'這一組再試一次！'};
+      }
+      board.chosen=null;
+    }
+  }
+  classroomView();
+  const buttons=[...app.querySelectorAll('button:not(:disabled)')];
+  const moved=type==='home'||type==='start'||type==='next';
+  const follow=type==='left'?'right:':type==='right'?'left:':'option:';
+  const next=buttons.find(b=>b.dataset.action==='next');
+  const option=buttons.find(b=>b.dataset.action.startsWith(follow));
+  (round?.answered&&!moved&&next ? next : option||buttons[0])?.focus();
+}
+
+document.body.classList.add('tv','local-tv');
+mode.textContent='教室電視版';
+app.addEventListener('click',event=>{
+  const trigger=event.target.closest('button[data-action]');
+  if(trigger&&!trigger.disabled) act(trigger.dataset.action);
+});
+document.addEventListener('keydown',event=>{
+  const axis={ArrowLeft:['x',-1],ArrowRight:['x',1],ArrowUp:['y',-1],ArrowDown:['y',1]}[event.key];
+  if(!axis) return;
+  const buttons=[...app.querySelectorAll('button:not(:disabled)')];
+  if(!buttons.length) return;
+  event.preventDefault();
+  const current=document.activeElement;
+  if(!buttons.includes(current)){ buttons[0].focus(); return; }
+  const center=element=>{
+    const r=element.getBoundingClientRect();
+    return {x:r.left+r.width/2,y:r.top+r.height/2};
+  };
+  const [direction,sign]=axis;
+  const cross=direction==='x'?'y':'x', origin=center(current);
+  let closest, best=Infinity;
+  for(const button of buttons) {
+    const point=center(button), forward=(point[direction]-origin[direction])*sign;
+    if(forward<4) continue;
+    const cost=forward+4*Math.abs(point[cross]-origin[cross]);
+    if(cost<best){ closest=button; best=cost; }
+  }
+  closest?.focus();
+});
+classroomView();
+
+</script></body></html>
